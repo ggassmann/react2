@@ -1,4 +1,4 @@
-import { IFiber } from "./lib/IFiber";
+import { Fiber } from "./lib/Fiber";
 
 let currentDispatcher;
 
@@ -18,10 +18,10 @@ export const resolveDispatcher = (): HookDispatcher => {
 }
 
 export class HookDispatcher {
-  public currentOriginFiber: IFiber;
-  public currentFiber: IFiber;
-  public update: () => void;
-  public startHooks(update: () => void, previousFiber: IFiber) {
+  public currentOriginFiber: Fiber;
+  public currentFiber: Fiber;
+  public update: (fiber: Fiber) => void;
+  public startHooks(update: (fiber: Fiber) => void, previousFiber: Fiber) {
     console.log('started hooks with', previousFiber);
     this.update = update;
     this.currentFiber = previousFiber || {state: 'origin', next: null};

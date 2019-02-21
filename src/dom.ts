@@ -3,8 +3,11 @@ import isString from '@f/is-string'
 import { IVNode } from "./lib/IVNode";
 import { isNumber, isFunction, isNull } from 'util';
 import { resolveDispatcher, HookDispatcher, setDispatcher, cleanupDispatcher } from './hookDispatcher';
+import { Fiber } from './lib/Fiber';
 
-export const update = async(domElement: HTMLElement, node: IVNode) => {
+export const update = async(domElement: HTMLElement, node: IVNode, fiber: Fiber) => {
+  console.log('got update with new fiber', fiber);
+  node.currentFiber = fiber;
   setDispatcher(new HookDispatcher());
   let newNode = await create(node);
   cleanupDispatcher();
@@ -22,10 +25,9 @@ export const create = async (node: IVNode): Promise<HTMLElement> => {
       if(isFunction(tagName)) {
         let dispatcher = resolveDispatcher()
 
-        dispatcher.startHooks(() => update(element, node), node.previousFiber);
+        dispatcher.startHooks((fiber: Fiber) => update(element, node, fiber), node.currentFiber);
         builtNode = tagName();
-        node.previousFiber = dispatcher.finishHooks();
-        console.log(node.previousFiber);
+        node.currentFiber = dispatcher.finishHooks();
 
         stringifiedTagName = builtNode.tagName as unknown as string;
       } else {

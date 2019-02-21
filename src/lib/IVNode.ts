@@ -1,4 +1,4 @@
-import { IFiber } from "./IFiber";
+import { Fiber } from "./Fiber";
 
 export interface IVNode {
   type: 'native';
@@ -6,5 +6,5 @@ export interface IVNode {
   attributes,
   children: (IVNode | string)[];
   key?: string;
-  previousFiber?: IFiber;
+  currentFiber?: Fiber;
 }
