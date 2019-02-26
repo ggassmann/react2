@@ -6,5 +6,5 @@ export interface IVNode {
   attributes,
   children: (IVNode | string)[];
   key?: string;
-  currentFiber?: Fiber;
+  currentFiber?: Fiber[];
 }

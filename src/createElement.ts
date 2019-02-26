@@ -2,8 +2,9 @@ import isUndefined from '@f/is-undefined'
 import isString from '@f/is-string'
 import isNumber from '@f/is-number'
 import isNull from '@f/is-null'
+import { IVNode } from './lib/IVNode';
 
-export function createElement (type, attributes, ...children) {
+export function createElement(type, attributes, ...children) {
   if (!type) throw new TypeError('element() needs a type.')
   attributes = attributes || {}
 
@@ -14,7 +15,8 @@ export function createElement (type, attributes, ...children) {
   delete attributes.key
 
   if (typeof type === 'object') {
-    //return createThunkElement(type.render, key, attributes, children, type)
+    type = Object.assign(type, { attributes, children });
+    return type;
   }
 
   if (typeof type === 'function') {
